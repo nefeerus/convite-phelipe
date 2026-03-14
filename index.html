@@ -46,7 +46,7 @@ transform:perspective(500px) rotateX(60deg);
 /* container */
 .container{
 padding:40px 20px;
-max-width:850px;
+max-width:900px;
 margin:auto;
 position:relative;
 z-index:2;
@@ -111,6 +111,26 @@ font-size:24px;
 color:#00ffff;
 }
 
+/* mapa */
+.map-container{
+position:relative;
+margin-top:25px;
+}
+
+.map-pin{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-100%);
+font-size:28px;
+animation:pinBounce 1.2s infinite;
+}
+
+@keyframes pinBounce{
+0%,100%{transform:translate(-50%,-100%)}
+50%{transform:translate(-50%,-115%)}
+}
+
 /* botão */
 button{
 background:none;
@@ -121,6 +141,7 @@ font-size:16px;
 border-radius:30px;
 cursor:pointer;
 transition:.3s;
+margin-top:10px;
 }
 
 button:hover{
@@ -128,6 +149,16 @@ background:#00ffff;
 color:black;
 box-shadow:0 0 15px #00ffff;
 transform:scale(1.05);
+}
+
+.pulse{
+animation:pulse 1.2s infinite;
+}
+
+@keyframes pulse{
+0%{box-shadow:0 0 5px #00ffff}
+50%{box-shadow:0 0 20px #00ffff}
+100%{box-shadow:0 0 5px #00ffff}
 }
 
 .footer{
@@ -141,6 +172,7 @@ opacity:.8;
 <body>
 
 <div class="stars"></div>
+
 <div class="container">
 
 <h1>🎉 PHELIPE 35+ 🎉</h1>
@@ -157,7 +189,7 @@ opacity:.8;
 
 <div class="info">
 📅 <b>28 de março (sábado)</b><br>
-⏰ <b>A partir das 11h</b><br><br>
+⏰ <b>A partir das 12h</b><br><br>
 
 📍 <b>Rua Etrusca, 13</b><br>
 Vila Bernadete (Parada Angélica)<br>
@@ -172,6 +204,21 @@ e os aniversariantes do mês 🎉<br><br>
 🎧 Dress code opcional: <b>anos 80/90</b>
 </div>
 
+<!-- MAPA -->
+<div class="map-container">
+
+<div class="map-pin">📍</div>
+
+<iframe id="mapa"
+src="https://www.google.com/maps?q=Rua+Etrusca,+13,+Duque+de+Caxias&output=embed"
+width="100%" height="260"
+style="border:2px solid #ff00cc;border-radius:12px;"
+loading="lazy">
+</iframe>
+
+</div>
+
+<button class="pulse" onclick="abrirMapa()">ABRIR NO GOOGLE MAPS</button><br>
 <button onclick="confirmar()">CONFIRMAR PRESENÇA</button>
 
 </div>
@@ -186,6 +233,7 @@ Vai ter música boa, resenha e zero moderação 🎶🔥
 <div class="grid"></div>
 
 <script>
+
 /* contagem regressiva */
 let destino = new Date("March 28, 2026 12:00:00").getTime();
 
@@ -193,24 +241,30 @@ setInterval(function(){
 let agora = new Date().getTime();
 let tempo = destino - agora;
 
-let dias = Math.floor(tempo/(1000*60*60*24));
-let horas = Math.floor((tempo%(1000*60*60*24))/(1000*60*60));
-let minutos = Math.floor((tempo%(1000*60*60))/(1000*60));
-let segundos = Math.floor((tempo%(1000*60))/1000);
-
-document.getElementById("dias").innerText=dias;
-document.getElementById("horas").innerText=horas;
-document.getElementById("minutos").innerText=minutos;
-document.getElementById("segundos").innerText=segundos;
-
+document.getElementById("dias").innerText=Math.floor(tempo/(1000*60*60*24));
+document.getElementById("horas").innerText=Math.floor((tempo%(1000*60*60*24))/(1000*60*60));
+document.getElementById("minutos").innerText=Math.floor((tempo%(1000*60*60))/(1000*60));
+document.getElementById("segundos").innerText=Math.floor((tempo%(1000*60))/1000);
 },1000);
+
+/* zoom automático no mapa */
+setTimeout(()=>{
+document.getElementById("mapa").style.transform="scale(1.05)";
+document.getElementById("mapa").style.transition="1.5s";
+},1500);
 
 /* whatsapp */
 function confirmar(){
 let msg="Oi! Confirmo minha presença na festa retrô do Phelipe dia 28/03 😎🎉";
-let numero="21981113084";
+let numero="5521981113084"; // troque aqui
 window.open(`https://wa.me/${numero}?text=${encodeURIComponent(msg)}`, "_blank");
 }
+
+/* maps */
+function abrirMapa(){
+window.open("https://www.google.com/maps/search/?api=1&query=Rua+Etrusca,+13,+Duque+de+Caxias","_blank");
+}
+
 </script>
 
 </body>
